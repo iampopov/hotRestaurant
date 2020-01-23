@@ -22,8 +22,8 @@
             <hr class="my-4">
             <h2>Make Your Reservation</h2>
             <div class="row justify-content-center"> 
-                <a class="btn btn-primary btn-lg viewTable" href="#" role="button">View Tables</a>
-                <button type="button" class="btn btn-info homeBtn" href="#"><i class="fas fa-home"></i></button>
+                <a class="btn btn-primary btn-lg viewTable" href="waitlist.html" role="button">View Tables</a>
+                <button type="button" class="btn btn-info homeBtn" href="home.html"><i class="fas fa-home"></i></button>
             </div>
         </div>
     </div>
@@ -34,25 +34,50 @@
 
     <div class="container">
         <form>
-            <label for="exampleFormControlInput1">Name</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1">
+            <label for="name">Name</label>
+            <input type="text" class="form-control" id="name">
             <div class="form-group">
             </div>
-            <label for="exampleFormControlInput1">Phone Number</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1">
+            <label for="phoneNumber">Phone Number</label>
+            <input type="text" class="form-control" id="phoneNumber">
             <div class="form-group">
             </div>
-            <label for="exampleFormControlInput1">Email</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1">
+            <label for="email">Email</label>
+            <input type="email" class="form-control" id="email">
             <div class="form-group">
             </div>
-            <label for="exampleFormControlInput1">Unique ID</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1">
+            <label for="id">Unique ID</label>
+            <input type="text" class="form-control" id="id">
             <div class="form-group">
             </div>
-            <button type="button" class="btn btn-primary SubmitBtn">Submit</button>
+            <button type="button" class="btn btn-primary SubmitBtn" id="submitBtn">Submit</button>
             
         </form>
     </div>
+
+<script type="text/javascript">
+    $("#submitBtn").on("click", function () {
+        var searchedTable = $("#table-search").val().trim();
+        // Using a RegEx Pattern to remove spaces from searchedCharacter
+        // You can read more about RegEx Patterns later https://www.regexbuddy.com/regex.html
+        searchedTable = searchedTable.replace(/\s+/g, "").toLowerCase();
+        $.get("/api/tables/" + searchedTable, function (data) {
+            console.log(data);
+            if (data) {
+                $("#table").show();
+                $("#name").text(data.name);
+                $("#phoneNumber").text(data.phoneNumber);
+                $("#email").text(data.email);
+                $("#id").text(data.id);
+            } else {
+                $("#table").text(
+                    "There are no tables available!.");
+                    $("#stats").hide();
+                }
+            });
+    })
+</script>
+
+
 </body>
 </html>
